@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundspace_mobileapp/domain/album.dart';
 import 'package:soundspace_mobileapp/infrastructure/presentation/providers/album_provider.dart';
+import 'package:soundspace_mobileapp/infrastructure/presentation/screens/artist/artist_page.dart';
 import '../../../../domain/artist.dart';
 import '../../providers/artist_provider.dart';
 import '../../providers/song_provider.dart';
@@ -47,6 +48,12 @@ class _ArtistCard extends StatelessWidget {
     return Column(children: [
       GestureDetector(
         onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ArtistPage(
+                        artist: artist,
+                      )));
           // artistProvider.updateCurrentArtist(artist);
           // await albumProvider.updateAlbumsByArtist(artist.id);
           // await songProvider.updateSongsByArtist(artist.id);

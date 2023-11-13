@@ -7,7 +7,7 @@ class SongProvider extends ChangeNotifier {
   String? currentSong;
   List<Song>? songsByAlbum;
   List<Song>? songsByArtist;
-  late List<Song> tracklist;
+  late List<Song>? tracklist;
 
   SongProvider({required this.repository});
 
@@ -19,6 +19,11 @@ class SongProvider extends ChangeNotifier {
 //Song song
   Future<void> updateCurrentSong(String id) async {
     currentSong = await repository.getSong(id);
+    notifyListeners();
+  }
+
+  Future<void> getSongsByArtist(String id) async {
+    songsByArtist = await repository.getSongsByArtist(id);
     notifyListeners();
   }
 

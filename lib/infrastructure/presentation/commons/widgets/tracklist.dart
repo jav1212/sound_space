@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../domain/song.dart';
 import '../../providers/audio_player_provider.dart';
+import '../../providers/song_provider.dart';
 
 class Tracklist extends StatelessWidget {
   final List<Song> songs;
@@ -25,13 +26,12 @@ class Tracklist extends StatelessWidget {
 
 class _TracklistItem extends StatelessWidget {
   final Song song;
-  //final String songUrl;
 
   const _TracklistItem({required this.song});
 
   @override
   Widget build(BuildContext context) {
-    // final songProvider = context.watch<SongProvider>();
+    final songProvider = context.watch<SongProvider>();
     final playerProvider = context.watch<AudioPlayerProvider>();
 
     final size = MediaQuery.of(context).size;
@@ -50,36 +50,36 @@ class _TracklistItem extends StatelessWidget {
                 //imagen
                 width: size.width * 0.2,
                 height: size.width * 0.2,
-                decoration: const BoxDecoration(color: Colors.amber),
-                // child: Image.network(song.imageURL, fit: BoxFit.cover,),
+
+                child: Image.network(
+                  song.imageURL,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(14),
+            Padding(
+              padding: const EdgeInsets.all(14),
               child: Column(children: [
                 Text(
-                  'Song', //song.name
-                ),
-                Text('Artist') //song.artist
+                  song.name,
+                ), //song.artist
               ]),
             ),
             Expanded(child: Container()),
-            const Padding(
-              padding: EdgeInsets.all(10),
+            Padding(
+              padding: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text('1:00'), //duracion total de la cancion
-                  SizedBox(width: 6),
+                  Text(song.duration), //duracion total de la cancion
+                  const SizedBox(width: 6),
                   IconButton(
-                      onPressed:
-                          null /*() {
-                        songProvider.updateCurrentSong(song);
-                        playerProvider.setPath(song.audioStreamURL);
+                      onPressed: () async {
+                        await songProvider.updateCurrentSong(song.id);
+                        playerProvider.setPath(songProvider.currentSong!);
                         playerProvider.play();
-                      }*/
-                      ,
-                      icon: Icon(
+                      },
+                      icon: const Icon(
                         Icons.play_arrow_sharp,
                         color: Color(0xff1de1ee),
                       ))

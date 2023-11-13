@@ -11,14 +11,12 @@ class Player extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final songProvider =
-        context.watch<SongProvider>(); //deberia ser read nada mas
     final playerProvider = context.watch<AudioPlayerProvider>();
 
     return Stack(
       children: [
         SizedBox(
-          height: 80,
+          height: 86,
           width: double.infinity,
           child: Column(
             children: [
@@ -33,19 +31,6 @@ class Player extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.play_circle_fill,
-                          size: 50,
-                          color: Color(0xff1de1ee),
-                        ),
-                        onPressed: () async {
-                          await songProvider.updateCurrentSong(
-                              '1774d479-f54a-4fb6-b3d4-8f64c1cdb3a4');
-                          playerProvider.setPath(songProvider.currentSong!);
-                          playerProvider.play();
-                        },
-                      ),
                       _PlayerButtom(),
                       const Padding(
                         padding: EdgeInsets.all(14),
@@ -59,8 +44,9 @@ class Player extends StatelessWidget {
                       Expanded(child: Container()),
                       Padding(
                         padding: const EdgeInsets.all(10),
-                        child: Text(
-                            '${playerProvider.player.position.inMinutes.toString()}:${playerProvider.player.position.inSeconds.toString()}'),
+                        child: Text(playerProvider.player.position
+                            .toString()
+                            .substring(2, 7)),
                       )
                     ],
                   ),
@@ -70,7 +56,7 @@ class Player extends StatelessWidget {
           ),
         ),
         Positioned(
-            bottom: 47,
+            bottom: 50,
             child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: const PlayerProgressBar()))
@@ -83,6 +69,8 @@ class _PlayerButtom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final playerProvider = context.watch<AudioPlayerProvider>();
+    final songProvider =
+        context.watch<SongProvider>(); //deberia ser read nada mas
     IconData icon;
     Color color;
 
@@ -112,7 +100,15 @@ class _PlayerButtom extends StatelessWidget {
         size: 50,
         color: color,
       ),
-      onPressed: () => playerProvider.playOrPause(),
+      onPressed: () async {
+        if (playerProvider.player.processingState == ProcessingState.idle) {
+          playerProvider.setPath(
+              'https://firebasestorage.googleapis.com/v0/b/soundcloud-imagenes.appspot.com/o/Cancion%2Fb43075de-7c9a-4f04-940b-38181fd98609.mp3?alt=media&token=fc2277a4-e30d-454b-af29-ff2e62342448');
+          playerProvider.play();
+        } else {
+          playerProvider.playOrPause();
+        }
+      },
     );
   }
 }
