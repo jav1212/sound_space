@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sound_space/infrastructure/repositories/api_repository.dart';
-
 import '../../../domain/album.dart';
+import '../../repositories/api_repository.dart';
 
 class AlbumProvider extends ChangeNotifier {
   final ApiRepository repository;
@@ -19,8 +18,8 @@ class AlbumProvider extends ChangeNotifier {
     return await repository.getTrendingAlbums();
   }
 
-  // Future<void> updateAlbumsByArtist(String id) async {
-  //   albumsByArtist = await repository.getAlbumsByArtist(id);
-  //   notifyListeners();
-  // }
+  Future<void> updateAlbumsByArtist(String id) async {
+    albumsByArtist = await repository.getAlbumsByArtist(id);
+    notifyListeners();
+  }
 }

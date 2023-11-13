@@ -19,7 +19,7 @@ class _AlbumsCarouselState extends State<AlbumsCarousel> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     List<_AlbumCard> albumsCard =
-        widget.albums.map((album) => _AlbumCard(id: album.id)).toList();
+        widget.albums.map((album) => _AlbumCard(album: album)).toList();
 
     return Gallery3D(
       controller:
@@ -47,17 +47,16 @@ class _AlbumsCarouselState extends State<AlbumsCarousel> {
 }
 
 class _AlbumCard extends StatelessWidget {
-  final String id;
-  const _AlbumCard({required this.id});
+  final Album album;
+  const _AlbumCard({required this.album});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.lime,
-        borderRadius: BorderRadius.all(
-          Radius.circular(20.0),
-        ),
+    return ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+      child: Image.network(
+        album.imageURL,
+        fit: BoxFit.cover,
       ),
     );
   }

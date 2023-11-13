@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:soundspace_mobileapp/infrastructure/presentation/commons/widgets/albums_carousel.dart';
 
 import '../../../repositories/api_repository.dart';
 import '../../commons/widgets/background.dart';
@@ -9,8 +10,7 @@ import '../../providers/artist_provider.dart';
 import '../../providers/audio_player_provider.dart';
 import '../../providers/playlist_provider.dart';
 import '../../providers/song_provider.dart';
-import 'widget/albums_carousel.dart';
-import 'widget/artists_carousel.dart';
+import '../../commons/widgets/artists_carousel.dart';
 import 'widget/playlist_wrap.dart';
 import 'widget/promotional_banner.dart';
 
@@ -140,10 +140,6 @@ class Home extends StatelessWidget {
                   : _Collapse(name: 'Artistas Trending', child: [
                       ArtistsCarousel(artists: artistsProvider.trendingArtists!)
                     ]),
-              // _Collapse(name: 'Artistas Trending', child: [
-              //   ArtistsCarousel(artists: artistsProvider.trendingArtists)
-              // ]),
-
               const Divider(
                 color: Color.fromARGB(18, 142, 139, 139),
                 height: 40,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sound_space/domain/artist.dart';
+import '../../../domain/artist.dart';
 import '../../repositories/api_repository.dart';
 
 class ArtistProvider extends ChangeNotifier {

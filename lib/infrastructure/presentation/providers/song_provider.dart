@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sound_space/infrastructure/repositories/api_repository.dart';
-
 import '../../../domain/song.dart';
+import '../../repositories/api_repository.dart';
 
 class SongProvider extends ChangeNotifier {
   final ApiRepository repository;
@@ -28,10 +27,10 @@ class SongProvider extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  // Future<void> updateSongsByArtist(String id) async {
-  //   songsByArtist = await repository.getSongsByArtist(id);
-  //   notifyListeners();
-  // }
+  Future<void> updateSongsByArtist(String id) async {
+    songsByArtist = await repository.getSongsByArtist(id);
+    notifyListeners();
+  }
 
   // Future<List<Song>> getTracklist() async {
   //   return await repository.getTracklist();
