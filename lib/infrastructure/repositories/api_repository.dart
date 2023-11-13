@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:sound_space/domain/playlist.dart';
-
 import '../../domain/album.dart';
 import '../../domain/artist.dart';
+import '../../domain/playlist.dart';
 
 class ApiRepository {
   final Dio dio = Dio();

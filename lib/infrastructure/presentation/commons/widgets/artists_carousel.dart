@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../domain/artist.dart';
+import '../../../../domain/artist.dart';
 
 class ArtistsCarousel extends StatelessWidget {
   final List<Artist> artists;
@@ -48,14 +48,15 @@ class _ArtistCard extends StatelessWidget {
           color: Colors.transparent,
           shape: const CircleBorder(eccentricity: 1),
           child: Container(
-              width: size.width * 0.3,
-              height: size.width * 0.3,
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 20, 196, 28),
-                shape: BoxShape.circle,
-              )
-              // child: Image.network(artist.imageURL, fit: BoxFit.cover),
-              ),
+            width: size.width * 0.3,
+            height: size.width * 0.3,
+            child: ClipOval(
+                child: Image.network(
+              artist.imageURL,
+              fit: BoxFit.cover,
+            )),
+            // child: Image.network(artist.imageURL, fit: BoxFit.cover),
+          ),
         ),
       ),
       Text(artist.name) //texto (model)

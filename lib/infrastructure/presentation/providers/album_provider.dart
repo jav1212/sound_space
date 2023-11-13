@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sound_space/infrastructure/repositories/api_repository.dart';
-
 import '../../../domain/album.dart';
+import '../../repositories/api_repository.dart';
 
 class AlbumProvider extends ChangeNotifier {
   final ApiRepository repository;

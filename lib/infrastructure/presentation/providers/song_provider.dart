@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sound_space/infrastructure/repositories/api_repository.dart';
-
 import '../../../domain/song.dart';
+import '../../repositories/api_repository.dart';
 
 class SongProvider extends ChangeNotifier {
   final ApiRepository repository;
