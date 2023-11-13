@@ -18,8 +18,8 @@ class AlbumProvider extends ChangeNotifier {
     return await repository.getTrendingAlbums();
   }
 
-  // Future<void> updateAlbumsByArtist(String id) async {
-  //   albumsByArtist = await repository.getAlbumsByArtist(id);
-  //   notifyListeners();
-  // }
+  Future<void> updateAlbumsByArtist(String id) async {
+    albumsByArtist = await repository.getAlbumsByArtist(id);
+    notifyListeners();
+  }
 }

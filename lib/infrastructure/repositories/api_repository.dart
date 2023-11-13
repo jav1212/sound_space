@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import '../../domain/album.dart';
 import '../../domain/artist.dart';
 import '../../domain/playlist.dart';
+import '../../domain/song.dart';
 
 class ApiRepository {
   final Dio dio = Dio();
@@ -88,25 +89,13 @@ class ApiRepository {
     return null;
   }
 
-  // @override
-  // Future<List<Album>> getAlbumsByArtist(String id) async {
-  //   final response = (await _dio.get("")).data[""];
+  Future<List<Album>?> getAlbumsByArtist(String id) async {
+    return null;
+  }
 
-  //   final List<Album> newAlbums =
-  //       response.map((song) => AlbumModel.fromJSON(song).toAlbumEntity());
-
-  //   return newAlbums;
-  // }
-
-  // @override
-  // Future<List<Song>> getSongsByArtist(String id) async {
-  //   final response = (await _dio.get("")).data[""];
-
-  //   final List<Song> newSongs =
-  //       response.map((song) => SongModel.fromJSON(song).toSongEntity());
-
-  //   return newSongs;
-  // }
+  Future<List<Song>?> getSongsByArtist(String id) async {
+    return null;
+  }
 
   // @override
   // Future<List<Song>> getSongsByAlbum(String id) async {
