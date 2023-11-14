@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:soundspace_mobileapp/domain/album.dart';
 import 'package:soundspace_mobileapp/domain/artist.dart';
@@ -80,7 +81,7 @@ class IndividualArtist extends StatelessWidget {
                         Icons.arrow_back_ios_new_outlined,
                         color: Colors.white,
                       ),
-                      padding: EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
                       iconSize: 25,
                       onPressed: () {
                         Navigator.pop(context);
@@ -116,14 +117,14 @@ class IndividualArtist extends StatelessWidget {
                                     Text(
                                       artist.name,
                                       style: const TextStyle(
-                                          fontSize: 30,
+                                          fontSize: 22,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    Text(
+                                    const Text(
                                       'genre',
-                                      style: const TextStyle(
-                                          fontSize: 20,
+                                      style: TextStyle(
+                                          fontSize: 15,
                                           color: Colors.white,
                                           fontWeight: FontWeight.normal),
                                     )
@@ -151,7 +152,7 @@ class IndividualArtist extends StatelessWidget {
                                                   return Text(
                                                     "${getRealAlbums(albumsProvider.albumsByArtist)} Album",
                                                     style: const TextStyle(
-                                                        fontSize: 18,
+                                                        fontSize: 15,
                                                         color: Colors.white),
                                                   );
                                                 }
@@ -160,7 +161,7 @@ class IndividualArtist extends StatelessWidget {
                                         : Text(
                                             "${getRealAlbums(albumsProvider.albumsByArtist)} Album",
                                             style: const TextStyle(
-                                                fontSize: 18,
+                                                fontSize: 15,
                                                 color: Colors.white),
                                           ),
                                     (songsProvider.songsByArtist == null)
@@ -181,7 +182,7 @@ class IndividualArtist extends StatelessWidget {
                                                   return Text(
                                                     "${songsProvider.songsByArtist?.length} Canciones",
                                                     style: const TextStyle(
-                                                        fontSize: 18,
+                                                        fontSize: 15,
                                                         color: Colors.white),
                                                   );
                                                 }
@@ -212,14 +213,14 @@ class IndividualArtist extends StatelessWidget {
                             return Text('Error: ${snapshot.error}');
                           } else {
                             return Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
                                 child: AlbumsCarousel(
                                     albums: albumsProvider.albumsByArtist!));
                           }
                         }
                       })
                   : Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
                       child: AlbumsCarousel(
                           albums: albumsProvider.albumsByArtist!)),
               (songsProvider.songsByArtist == null)
@@ -236,23 +237,29 @@ class IndividualArtist extends StatelessWidget {
                             return Text('Error: ${snapshot.error}');
                           } else {
                             return Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                                 child: Tracklist(
                                     songs: songsProvider.songsByArtist!));
                           }
                         }
                       })
                   : Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                       child: Tracklist(songs: songsProvider.songsByArtist!)),
-              Visibility(
-                visible: playerProvider.player.playing,
-                child: const Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Player(),
-                ),
-              )
+              const SizedBox(height: 100)
             ],
+          ),
+        ),
+        Visibility(
+          visible: ((playerProvider.player.processingState ==
+                      ProcessingState.idle) ||
+                  (playerProvider.player.processingState ==
+                      ProcessingState.completed))
+              ? false
+              : true,
+          child: const Align(
+            alignment: Alignment.bottomLeft,
+            child: Player(),
           ),
         )
       ],

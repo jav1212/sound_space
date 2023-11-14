@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:soundspace_mobileapp/infrastructure/presentation/commons/widgets/albums_carousel.dart';
 
 import '../../../repositories/api_repository.dart';
 import '../../commons/widgets/background.dart';
 import '../../commons/widgets/player.dart';
+import '../../commons/widgets/tracklist.dart';
 import '../../providers/album_provider.dart';
 import '../../providers/artist_provider.dart';
 import '../../providers/audio_player_provider.dart';
 import '../../providers/playlist_provider.dart';
 import '../../providers/song_provider.dart';
-import '../../commons/widgets/artists_carousel.dart';
+import 'widget/artists_carousel.dart';
 import 'widget/playlist_wrap.dart';
 import 'widget/promotional_banner.dart';
 
@@ -47,7 +49,8 @@ class Home extends StatelessWidget {
     final playlistProvider = context.watch<PlaylistProvider>();
     final albumsProvider = context.watch<AlbumProvider>();
     final artistsProvider = context.watch<ArtistProvider>();
-    // final songsProvider = context.watch<SongProvider>();
+    final songsProvider = context.watch<SongProvider>();
+    final playerProvider = context.watch<AudioPlayerProvider>();
 
     return Stack(
       children: [
@@ -57,15 +60,34 @@ class Home extends StatelessWidget {
               AppBar(
                 backgroundColor: Colors.transparent,
                 actions: const [
-                  Icon(Icons.search, color: Colors.white),
+                  Icon(Icons.search,
+                      color: Colors.white), //navigate to searchPage
                   SizedBox(width: 10),
                   Icon(Icons.more_vert, color: Colors.white),
                   SizedBox(width: 10),
                 ],
               ),
-              const PromotionalBanner(
-                  imgPath:
-                      "https://i.ytimg.com/vi/reS5AGoE2jM/maxresdefault.jpg"),
+              //
+              (artistsProvider.bannerImgUrl == null)
+                  ? FutureBuilder(
+                      future: playlistProvider.loadInitState(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child:
+                                  CircularProgressIndicator()); // muestra un indicador de carga mientras se espera
+                        } else {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return PromotionalBanner(
+                                imgPath: artistsProvider.bannerImgUrl!);
+                          }
+                        }
+                      })
+                  : PromotionalBanner(imgPath: artistsProvider.bannerImgUrl!),
+
               //
               (playlistProvider.playlists == null)
                   ? FutureBuilder(
@@ -147,17 +169,40 @@ class Home extends StatelessWidget {
                 indent: 20,
                 endIndent: 20,
               ),
-
-              // _Collapse(
-              //     name: 'Tracklist',
-              //     child: [Tracklist(songs: songsProvider.tracklist)]),
-              // const SizedBox(height: 100)
+//
+              (songsProvider.tracklist == null)
+                  ? FutureBuilder(
+                      future: songsProvider.loadInitState(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return _Collapse(name: 'Tracklist', child: [
+                              Tracklist(songs: songsProvider.tracklist!)
+                            ]);
+                          }
+                        }
+                      })
+                  : _Collapse(
+                      name: 'Tracklist',
+                      child: [Tracklist(songs: songsProvider.tracklist!)]),
+              const SizedBox(height: 100)
             ],
           ),
         ),
-        const Visibility(
-          visible: true /*playerProvider.player.playing*/,
-          child: Align(
+        Visibility(
+          visible: ((playerProvider.player.processingState ==
+                      ProcessingState.idle) ||
+                  (playerProvider.player.processingState ==
+                      ProcessingState.completed))
+              ? false
+              : true,
+          child: const Align(
             alignment: Alignment.bottomLeft,
             child: Player(),
           ),

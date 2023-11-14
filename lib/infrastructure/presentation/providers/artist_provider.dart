@@ -4,14 +4,14 @@ import '../../repositories/api_repository.dart';
 
 class ArtistProvider extends ChangeNotifier {
   final ApiRepository repository;
-  late String bannerImgUrl;
+  String? bannerImgUrl;
   List<Artist>? trendingArtists;
   Artist? currentArtist;
 
   ArtistProvider({required this.repository});
 
   Future<void> loadInitState() async {
-    //bannerImgUrl = await getPromotionalBanner();
+    bannerImgUrl = await getPromotionalBanner();
     trendingArtists = await getTrendingArtists();
     notifyListeners();
   }
@@ -20,9 +20,9 @@ class ArtistProvider extends ChangeNotifier {
     return await repository.getTrendingArtists();
   }
 
-  //Future<String> getPromotionalBanner() async {
-  //  return await _repository.getPromotionalBanner();
-  //}
+  Future<String?> getPromotionalBanner() async {
+    return await repository.getPromotionalBanner();
+  }
 
   void updateCurrentArtist(Artist artist) {
     currentArtist = artist;

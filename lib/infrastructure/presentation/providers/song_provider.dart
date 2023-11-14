@@ -7,12 +7,12 @@ class SongProvider extends ChangeNotifier {
   String? currentSong;
   List<Song>? songsByAlbum;
   List<Song>? songsByArtist;
-  late List<Song>? tracklist;
+  List<Song>? tracklist;
 
   SongProvider({required this.repository});
 
-  void loadInitState() async {
-    // tracklist = await getTracklist();
+  Future<void> loadInitState() async {
+    tracklist = await getTracklist();
     notifyListeners();
   }
 
@@ -27,17 +27,7 @@ class SongProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> updateSongsByAlbum(String id) async {
-  //   songsByAlbum = await repository.getSongsByAlbum(id);
-  //   notifyListeners();
-  // }
-
-  Future<void> updateSongsByArtist(String id) async {
-    songsByArtist = await repository.getSongsByArtist(id);
-    notifyListeners();
+  Future<List<Song>?> getTracklist() async {
+    return await repository.getTracklist();
   }
-
-  // Future<List<Song>> getTracklist() async {
-  //   return await repository.getTracklist();
-  // }
 }

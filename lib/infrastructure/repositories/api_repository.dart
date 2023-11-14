@@ -7,13 +7,20 @@ import '../../domain/song.dart';
 class ApiRepository {
   final Dio dio = Dio();
 
-  // @override
-  // Future<String> getPromotionalBanner() async {
-  //   final String bannerImgURL = (await _dio.get("")).data["d"];
-  //   return bannerImgURL;
-  // }
+  Future<String?> getPromotionalBanner() async {
+    try {
+      final response = await dio.get(
+          "https://soundspace-api-production.up.railway.app/api/publicidad");
 
-  // @override
+      if (response.statusCode == 200) {
+        return response.data['data']['referencia_imagen'];
+      }
+    } catch (e) {
+      print('$e');
+    }
+    return null;
+  }
+
   Future<List<Playlist>?> getPlaylists() async {
     try {
       final response = await dio.get(
@@ -155,35 +162,37 @@ class ApiRepository {
     return null;
   }
 
-  // @override
-  // Future<List<Song>> getSongsByAlbum(String id) async {
-  //   final response = (await _dio.get("")).data[""];
+  Future<List<Song>?> getTracklist() async {
+    try {
+      final response = await dio.get(
+          "https://soundspace-api-production.up.railway.app/api/songs/tracklist");
 
-  //   final List<Song> newSongs =
-  //       response.map((song) => SongModel.fromJSON(song).toSongEntity());
+      if (response.statusCode == 200) {
+        List<Song> newSongs = response.data['data']
+            .map<Song>((artist) => Song(
+                id: artist['codigo'],
+                name: artist['nombre'],
+                duration: artist['duracion'],
+                imageURL: artist['referencia']))
+            .toList();
 
-  //   return newSongs;
-  // }
-
-  // @override
-  // Future<List<Song>> getTracklist() async {
-  //   final response = (await _dio.get("")).data[""];
-
-  //   final List<Song> newSongs =
-  //       response.map((song) => SongModel.fromJSON(song).toSongEntity());
-  //   return newSongs;
-  // }
-
-  // @override
-  // Future<Artist> getArtist(String id) async {
-  //   final response = (await _dio.get("")).data[""];
-  //   return ArtistModel.fromJSON(response).toArtistEntity();
-  // }
+        return newSongs;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('$e');
+    }
+    return null;
+  }
 
   Future<String?> getSong(String id) async {
     try {
       final response = await dio.get(
-          "https://soundspace-api-production.up.railway.app/api/songs/link/$id");
+          "https://soundspace-api-production.up.railway.app/api/songs/link/$id",
+          options: Options(
+            headers: {'user': '64a0c01f-3ffd-4e65-932a-3ab72156c6ae'},
+          ));
 
       if (response.statusCode == 200) return response.data['data'];
     } catch (e) {
