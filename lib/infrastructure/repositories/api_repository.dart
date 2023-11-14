@@ -200,4 +200,21 @@ class ApiRepository {
     }
     return null;
   }
+
+  Future<String?> logInUser(String number) async {
+    try {
+      final response = await dio.post(
+          "https://soundspace-api-production.up.railway.app/api/auth/login",
+          data: {
+            'number': number,
+          });
+
+      if (response.statusCode == 200) {
+        return response.data['data']['codigo_usuario'];
+      }
+    } catch (e) {
+      print('$e');
+    }
+    return null;
+  }
 }
